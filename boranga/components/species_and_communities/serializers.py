@@ -53,6 +53,7 @@ class ListSpeciesSerializer(serializers.ModelSerializer):
 	district = serializers.SerializerMethodField()
 	processing_status = serializers.CharField(source='get_processing_status_display')
 	user_process = serializers.SerializerMethodField(read_only=True)
+
 	class Meta:
 		model = Species
 		fields = (
@@ -72,7 +73,7 @@ class ListSpeciesSerializer(serializers.ModelSerializer):
 				'can_user_edit',
 				'can_user_view',
 				'user_process',
-				'comment'
+				'comment',
 			)
 		datatables_always_serialize = (
                 'id',
@@ -612,6 +613,7 @@ class InternalSpeciesSerializer(BaseSpeciesSerializer):
 	current_assessor = serializers.SerializerMethodField()
 	allowed_species_processors = EmailUserSerializer(many=True)
 	user_edit_mode = serializers.SerializerMethodField()
+	reversion_ids = serializers.SerializerMethodField()
 
 	class Meta:
 		model = Species
@@ -638,7 +640,8 @@ class InternalSpeciesSerializer(BaseSpeciesSerializer):
 			'current_assessor',
 			'allowed_species_processors',
 			'user_edit_mode',
-			'comment'
+			'comment',
+			'reversion_ids',
 			)
 
 	def get_submitter(self, obj):
@@ -671,6 +674,11 @@ class InternalSpeciesSerializer(BaseSpeciesSerializer):
 			request.user._wrapped if hasattr(request.user, "_wrapped") else request.user
 		)
 		return obj.has_user_edit_mode(user)
+	
+	def get_reversion_ids(self,obj):
+		if hasattr(obj,"reversion_ids"):
+			return obj.reversion_ids[:5]
+		return
 
 
 class CommunityDistributionSerializer(serializers.ModelSerializer): 
@@ -963,6 +971,7 @@ class InternalCommunitySerializer(BaseCommunitySerializer):
 	current_assessor = serializers.SerializerMethodField()
 	allowed_community_processors = EmailUserSerializer(many=True)
 	user_edit_mode = serializers.SerializerMethodField()
+	reversion_ids = serializers.SerializerMethodField()
 
 	class Meta:
 		model = Community
@@ -988,7 +997,8 @@ class InternalCommunitySerializer(BaseCommunitySerializer):
 			'current_assessor',
 			'allowed_community_processors',
 			'user_edit_mode',
-			'comment'
+			'comment',
+			'reversion_ids',
 			)
 
 	def get_submitter(self, obj):
@@ -1020,7 +1030,10 @@ class InternalCommunitySerializer(BaseCommunitySerializer):
 		)
 		return obj.has_user_edit_mode(user)
 
-
+	def get_reversion_ids(self,obj):
+		if hasattr(obj,"reversion_ids"):
+			return obj.reversion_ids[:5]
+		return
 
 class SaveSpeciesSerializer(BaseSpeciesSerializer):
     region_id = serializers.IntegerField(required=False, allow_null=True, write_only= True)

@@ -50,6 +50,13 @@
                 :lodgement_date="species_community.lodgement_date"
                 class="mt-2"
             />
+
+            <History v-if="canSeeSubmission"
+                :history_url="history_url"
+                :reversion_ids="species_community.reversion_ids"
+                class="mt-2"
+            />
+
             <div class="top-buffer-s">
                 <div class="card card-default">
                     <div class="card-header">
@@ -165,6 +172,7 @@ import Vue from 'vue'
 import datatable from '@vue-utils/datatable.vue'
 import CommsLogs from '@common-utils/comms_logs.vue'
 import Submission from '@common-utils/submission.vue'
+import History from '@common-utils/history.vue'
 import Workflow from '@common-utils/workflow.vue'
 
 //import MoreReferrals from '@common-utils/more_referrals.vue'
@@ -199,6 +207,7 @@ export default {
         datatable,
         CommsLogs,
         Submission,
+        History,
         Workflow,
         ProposalSpeciesCommunities,
         SpeciesSplit,
@@ -292,6 +301,11 @@ export default {
           return (this.species_community.group_type === "community") ? 
                   helpers.add_endpoint_json(api_endpoints.community,this.$route.params.species_community_id+'/action_log'): 
                   helpers.add_endpoint_json(api_endpoints.species,this.$route.params.species_community_id+'/action_log');
+        },
+        history_url: function(){
+            return (this.species_community.group_type === "community") ? 
+                  '/history/community/filtered/'+this.$route.params.species_community_id+'/?': 
+                  '/history/species/filtered/'+this.$route.params.species_community_id+'/?';
         },
     },
     methods: {
