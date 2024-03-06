@@ -10,8 +10,8 @@ coveralls==1.1
 reportlab==3.5.55
 django-braces>=1.8.1
 django-datatables-view==1.13.0
-django-reversion==3.0.0
-django-reversion-compare==0.8.6
+django-reversion==5.0.0
+django-reversion-compare==0.15.0
 git+https://github.com/xzzy/django-preserialize.git#egg=django-preserialize
 django-countries==7.2.1
 django-cron==0.5.0

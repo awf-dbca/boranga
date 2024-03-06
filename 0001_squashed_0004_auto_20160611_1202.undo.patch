@@ -1,0 +1,23 @@
+--- 0001_squashed_0004_auto_20160611_1202.ledger-edits.py	2023-02-28 09:33:36.327882151 +0800
++++ 0001_squashed_0004_auto_20160611_1202.py	2023-02-28 08:50:02.620645917 +0800
+@@ -9,8 +9,8 @@
+     initial = True
+
+     dependencies = [
+-        # migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+-        # ('contenttypes', '0001_initial'),
++        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
++        ('contenttypes', '0001_initial'),
+     ]
+
+     operations = [
+@@ -20,8 +20,7 @@
+                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                 ('date_created', models.DateTimeField(db_index=True, help_text='The date and time this revision was created.', verbose_name='date created')),
+                 ('comment', models.TextField(blank=True, help_text='A text comment on this revision.', verbose_name='comment')),
+-                # ('user', models.ForeignKey(blank=True, help_text='The user who created this revision.', null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='user')),
+-                ('user_id', models.IntegerField(blank=True, help_text='The user who created this revision.', null=True, verbose_name='user_id')),
++                ('user', models.ForeignKey(blank=True, help_text='The user who created this revision.', null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL, verbose_name='user')),
+             ],
+             options={
+                 "ordering": ("-pk",)

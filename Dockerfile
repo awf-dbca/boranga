@@ -85,3 +85,5 @@ CMD ["/startup.sh"]
 #CMD ["gunicorn", "parkstay.wsgi", "--bind", ":8080", "--config", "gunicorn.ini"]
 
 LABEL org.opencontainers.image.source="https://github.com/dbca-wa/boranga"
+
+#patch /home/container/.local/lib/python3.10/site-packages/reversion/migrations/0001_squashed_0004_auto_20160611_1202.py 0001_squashed_0004_auto_20160611_1202.patch

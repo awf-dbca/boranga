@@ -12,7 +12,7 @@
                         </tr>
                         <tr v-for="r in reversion_ids">
                             <td>{{ r.created | formatDate }}</td>
-                            <td><a id="history_id" :href="history_url+'version_id2='+ r.cur_version_id +'&version_id1='+ r.prev_version_id" target="_blank">compare</a></td>
+                            <td><a id="history_id" :href="history_url+'version_id2='+ r.cur_version_id +'&version_id1='+ r.prev_version_id" target="_blank">Compare</a></td>
                         </tr>
                 </table>
             </div>

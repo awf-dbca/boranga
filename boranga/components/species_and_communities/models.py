@@ -19,6 +19,7 @@ from ledger_api_client.ledger_models import EmailUserRO as EmailUser
 from boranga.ledger_api_utils import retrieve_email_user
 from ledger_api_client.managed_models import SystemGroup
 from multiselectfield import MultiSelectField
+from reversion.models import Version
 from boranga.settings import (
     GROUP_NAME_ASSESSOR,
     GROUP_NAME_APPROVER,
@@ -807,6 +808,13 @@ class Species(models.Model):
 
             except:
                 raise
+    
+    @property
+    def reversion_ids(self):
+        current_revision_id = Version.objects.get_for_object(self).first().revision_id
+        versions = Version.objects.get_for_object(self).select_related("revision__user").filter(Q(revision__comment__icontains='status') | Q(revision_id=current_revision_id))
+        version_ids = [[i.id,i.revision.date_created] for i in versions]
+        return [dict(cur_version_id=version_ids[0][0], prev_version_id=version_ids[i+1][0], created=version_ids[i][1]) for i in range(len(version_ids)-1)]
 
 
 class SpeciesLogDocument(Document):
@@ -1270,6 +1278,12 @@ class Community(models.Model):
             self.image_doc=document
             self.save()
 
+    @property
+    def reversion_ids(self):
+        current_revision_id = Version.objects.get_for_object(self).first().revision_id
+        versions = Version.objects.get_for_object(self).select_related("revision__user").filter(Q(revision__comment__icontains='status') | Q(revision_id=current_revision_id))
+        version_ids = [[i.id,i.revision.date_created] for i in versions]
+        return [dict(cur_version_id=version_ids[0][0], prev_version_id=version_ids[i+1][0], created=version_ids[i][1]) for i in range(len(version_ids)-1)]
 
 class CommunityTaxonomy(models.Model):
     """
@@ -1879,3 +1893,7 @@ class CommunityConservationAttributes(models.Model):
 
     def __str__(self):
         return str(self.community)  # TODO: is the most appropriate?
+
+import reversion
+reversion.register(Species)
+reversion.register(Community)

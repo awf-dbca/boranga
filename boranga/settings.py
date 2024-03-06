@@ -82,7 +82,8 @@ STATIC_URL = '/static/'
 
 
 INSTALLED_APPS += [
-    #'reversion_compare',
+    'reversion',
+    'reversion_compare',
     'webtemplate_dbca',
     'boranga',
     'boranga.components.main',
